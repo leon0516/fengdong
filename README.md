@@ -19,3 +19,5 @@ arduino控制风洞
 主程序main文件夹中，其他文件为测试文件
 
 每次新功能添加后都会第一时间更新main文件夹
+
+测距用到了头文件在libraries文件夹下，自行导入到arduino IDE
