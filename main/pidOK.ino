@@ -8,9 +8,9 @@ int pwmpin=10;//定义数字接口11（PWM 输出）
 int val=0;// 暂存来自传感器的变量数值
 int pwmval=0;
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.
-float cm;
-uint8_t tempctrl,KP=1,KI=1,KD=0.3;
-uint8_t cmset=30;
+double cm;
+double tempctrl,KP=1,KI=1,KD=0.3;
+double cmset=30;
 void setup()
 
 {
@@ -43,8 +43,8 @@ delay(500);//延时0.01 秒
 }
 void PID()
 { 
-  static signed int err0,err1,err2;// three value
-  signed int add;  //The incremental
+  static double err0,err1,err2;// three value
+  double add;  //The incremental
   err0=cmset-cm;
   add=KP*(err0-err1)+KI*err0+KD*(err0-2*err1+err2);
   tempctrl=tempctrl+add;
