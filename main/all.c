@@ -41,7 +41,7 @@ int pwmval=0;
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.
 double cm;
 double tempctrl,KP=1,KI=1,KD=0.3;
-int cmset=40;
+int cmset=0;
 void setup()
 
 {
@@ -170,7 +170,7 @@ cmset=40;
 
 void _right()
 {
-  cmset=40;
+  cmset=0;
  // analogWrite(l_motor,200);
  // analogWrite(r_motor,0);
 }
