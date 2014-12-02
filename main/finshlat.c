@@ -1,5 +1,4 @@
-
-#include "LCD12864R.h"
+#include "LCD12864RSPI.h"
 #define AR_SIZE( a ) sizeof( a ) / sizeof( a[0] )
 #include <NewPing.h>
 #define up     0X7570
@@ -9,7 +8,6 @@
 #define TRIGGER_PIN  12 
 #define ECHO_PIN     11 
 #define MAX_DISTANCE 200
-
 #define key1 2 
 #define key2 3
 #define key3 4
@@ -27,38 +25,40 @@ unsigned char hengxian[]={
   0xA3, 0xAD,
   0xA3, 0xAD,
   0xA3, 0xAD
-     };                    //－－－－－－－－
+     };                 //－－－－－－－－
 unsigned char messageString[]={
-  0xCE, 0xDE,
-  0xCE, 0xFD,
-  0xD6, 0xB0,
-  0xD2, 0xB5,
-  0xBC, 0xBC,
-  0xCA, 0xF5,
-  0xD1, 0xA7,
-  0xD4, 0xBA
-     };                    //无锡职业技术学院
+  0xD2, 0xBD,
+  0xD3, 0xC3,
+  0xCE, 0xED,
+  0xBB, 0xAF,
+  0xD6, 0xC7,
+  0xC4, 0xDC,
+  0xBF, 0xD8,
+  0xD6, 0xC6
+     };                 //医用雾化智能控制
 unsigned char show0[]={
   0xB5, 0xB1,
   0xC7, 0xB0,
   0xC4, 0xA3,
   0xCA, 0xBD,
   0x3A, 0x00
-     };                    //当前模式:
-
-unsigned char show1[]={0xB6,0xF9,0xCD,0xAF};//儿童
+     };                 //当前模式:
+unsigned char show1[]={
+	0xB6,0xF9,
+	0xCD,0xAF
+		 };                 //儿童
 unsigned char show2[]={
   0xC0, 0xCF,
   0xC8, 0xCB
-     };       //老人
+     };                 //老人
 unsigned char show3[]={
   0xB3, 0xC9,
   0xC8, 0xCB
-   };     //成人
+   };                   //成人
 unsigned char show4[]={
   0xB9, 0xD8,
   0xB1, 0xD5
-     };                    //关闭
+     };                 //关闭
 int pwmpin=13;
 int val=0;
 int pwmval=0;
@@ -74,60 +74,24 @@ pinMode(key3,INPUT);
 pinMode(key4,INPUT); 
 pinMode(pwmpin,OUTPUT);
 Serial.begin(9600);
+delay(100);
 LCDA.Initialise(); 
 delay(100);
 LCDA.CLEAR();//清屏
 delay(100);
-LCDA.DisplayString(0,0,messageString,AR_SIZE(messageString));//无锡职业技术学院
+LCDA.DisplayString(0,0,messageString,AR_SIZE(messageString));//药物雾化智能控制
 delay(100);
-LCDA.DisplayString(1,0,hengxian,AR_SIZE(hengxian));//第一行第三格开始，显示文字
+LCDA.DisplayString(1,0,hengxian,AR_SIZE(hengxian));//第二行  横线
 delay(100);
-LCDA.DisplayString(2,0,show0,AR_SIZE(show0));//第一行第三格开始，显示文字
+LCDA.DisplayString(2,0,show0,AR_SIZE(show0));//第三行第三格开始，显示“当前模式”
 delay(100);
-LCDA.DisplayString(3,0,hengxian,AR_SIZE(hengxian));//第一行第三格开始，显示文字
+LCDA.DisplayString(3,0,hengxian,AR_SIZE(hengxian));//第四行显示横线
 delay(100);
 }
 void loop()
 {
-	
 	Bluetooth();
-	  if(digitalRead(key1)==HIGH)
-  {
-    delay(10); 
-    if(digitalRead(key1)==HIGH) 
-    {
-      _up();
-    }
-  }
-  
-  
-     if(digitalRead(key2)==HIGH) 
-  {
-    delay(10); 
-    if(digitalRead(key2)==HIGH) 
-    {
-      _down();
-    }
-  }
-  
-  if(digitalRead(key3)==HIGH) 
-  {
-    delay(10);
-    if(digitalRead(key3)==HIGH) 
-    {
-      _left();
-    }
-  }
-  
-  
-	if(digitalRead(key4)==HIGH)
-	  {
-		delay(10); 
-		if(digitalRead(key4)==HIGH) 
-		{
-		  _right();
-		}
-	  } 
+	anjian(); 
 delay(50);                     
 unsigned int uS = sonar.ping(); 
 Serial.print(cmset);
@@ -251,21 +215,59 @@ void lcd()
 	if (cmset==20)
 	{
 	LCDA.DisplayString(2,5,show1,AR_SIZE(show1));
-	delay(20);
+	delay(50);
 	}
 	if (cmset==30)
 	{
 	  LCDA.DisplayString(2,5,show2,AR_SIZE(show2));
-	  delay(20);
+	  delay(50);
 	}
 	if(cmset==40)
 	{
 	  LCDA.DisplayString(2,5,show3,AR_SIZE(show3));
-	  delay(20);
+	  delay(50);
 	} 
 	if(cmset==0)
 	{
 	  LCDA.DisplayString(2,5,show4,AR_SIZE(show4));
-	  delay(20);
+	  delay(50);
 	} 
+}
+void anjian ()
+{
+	 if(digitalRead(key1)==HIGH)
+  {
+    delay(10); 
+    if(digitalRead(key1)==HIGH) 
+    {
+      _up();
+    }
+  }
+
+     if(digitalRead(key2)==HIGH) 
+  {
+    delay(10); 
+    if(digitalRead(key2)==HIGH) 
+    {
+      _down();
+    }
+  }
+  
+  if(digitalRead(key3)==HIGH) 
+  {
+    delay(10);
+    if(digitalRead(key3)==HIGH) 
+    {
+      _left();
+    }
+  }
+  
+	if(digitalRead(key4)==HIGH)
+	  {
+			delay(10); 
+			if(digitalRead(key4)==HIGH) 
+			{
+			  _right();
+			}
+	  } 
 }

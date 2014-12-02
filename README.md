@@ -21,3 +21,6 @@ arduino控制风洞
 每次新功能添加后都会第一时间更新main文件夹
 
 测距用到了头文件在libraries文件夹下，自行导入到arduino IDE
+
+
+部分lib引脚有修改，请具体查看源码
